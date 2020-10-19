@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>List of friends</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h1>List of my friends</h1>
+
+    <ul id="list" class="list-group">
+        <li class="list-group-item">Example</li>
+    </ul>
+
+</div>
+<script>
+
+let arr = ["Tom", "Steve", "Bill", "Rita", "Pete", "Ashley"];
+const list = document.getElementById('list');
+const group = document.getElementsByClassName('list-group-item')
+
+map(arr, inText)
+
+function map(list, fn){
+  for(let item of group){
+    item.remove()
+  }
+  fn(list)
+ }
+
+function setItem(mas) {
+  mas.sort();
+  let result = [];
+      for(let i = 0; i<mas.length; i++){
+        let li = document.createElement('li');
+        li.className="list-group-item"
+        li.append(mas[i]);
+        result.push(li);
+      }
+    return result;
+}
+
+function inText(a) {
+  let ul = document.createElement("ul");
+  ul.id="list";
+  //list.append(ul);
+  list.append(...setItem(a))
+  }
+
+</script>
+</body>
+</html>
