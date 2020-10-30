@@ -1,0 +1,31 @@
+/*
+Код работает, но не защищен - клментский код может удалить элементы массива  из-вне
+Исправить этот недостаток
+*/
+<html>
+<body>
+<script>
+  function getUsers() {
+    const users = ["Bill"];
+    return {
+      addUser: function(name) {
+        users.push(name);
+        return users;
+      },
+      getUser: function() {
+          return (function() {
+        console.log(users)
+      })();
+      }
+    };
+  }
+
+  const u = getUsers();
+  u.addUser("Jim");
+  u.addUser("Paul");
+  console.log(u.getUser()); // выведется [ 'Bill', 'Jim', 'Paul' ]
+
+  u.getUser().pop(); // удаляем 2-й элемент массива
+  console.log(u.getUser()); //  ['Bill', 'Jim']
+</script>
+</body></html>
