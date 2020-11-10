@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Github users</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script
+      crossorigin
+      src="https://unpkg.com/react@16.8.3/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@16.8.3/umd/react-dom.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/prop-types@15.7.2/prop-types.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"
+    ></script>
+
+    <script type="text/babel">
+      const root = document.getElementById("root");
+
+      class Form extends React.Component {
+        state = {
+          value: "",
+        };
+
+        update = event => this.setState({ value: event.target.value })
+
+        handleSubmit = event => {
+          event.preventDefault();
+          this.props.submit(this.state.value);
+          this.setState({ value: "" });
+        }
+
+        render() {
+          return (
+                  <form onSubmit={this.handleSubmit}>
+                    <div className="form-box">
+                      <div className="form-box__item">
+                        <input
+                            type="text"
+                            value={this.state.value}
+                            onChange={this.update}
+                        />
+                        <button>Add user</button>
+                      </div>
+                    </div>
+                  </form>
+          )
+        }
+      }
+      class App extends React.Component {
+        state = {
+          data: [],
+        };
+
+        deleteUser = id =>{
+          console.log(id);
+          let newArr = this.state.data;
+          for (let i = 0; i<newArr.length; i++){
+            newArr[i].id === id ? newArr.splice(i, 1) :{}
+          }
+          this.setState({data: newArr})
+        }
+
+        addUser = async userName => {
+          const url =`https://api.github.com/users/${userName}`;
+          const response = await fetch(url);
+          const user = await response.json();
+          this.setState({ data: [...this.state.data, user] });
+        }
+
+        render() {
+          return (
+                  <div className="container">
+                    <Form submit={this.addUser} />
+                    <CartList deleteUser={this.deleteUser} data={this.state.data}/>
+                  </div>
+          )
+        }
+      }
+      const CartList = ({ deleteUser, data }) => (
+              <div className="cart-box">
+                {data.map(profile => (
+                        <Cart deleteUser={deleteUser} key={profile.id} profile={profile} />
+                ))}
+              </div>
+      )
+
+      function Cart ({deleteUser, profile }) {
+        return (<div className="cart">
+          <h3>{profile.name}</h3>
+          <p>{profile.login}</p>
+          <img src={profile.avatar_url} alt="https://placehold.it/75"/>
+          <button onClick={()=>deleteUser(profile.id)}>Delete</button>
+        </div>)
+      }
+
+      ReactDOM.render(<App />, root);
+    </script>
+  </body>
+</html>
