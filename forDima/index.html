@@ -1,0 +1,43 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <input id="searchInput" type="text" value="">
+    <input id="keyValue" type="number" value="">
+    <input id="forValue" type="text" value="">
+    <button id="saveBtn" type="button">Save</button>
+    <div id="results"></div>
+    <script>
+      searchInput.oninput = findValue
+      saveBtn.onclick = changeData
+      window.onload = start
+
+      let resultArr = []
+
+      function start(
+        fetch('http://localhost:3000', "GET")
+        .then(result=>{
+          return result.json()
+        })
+        .then(result=>for(let a in result){
+          resultArr.push(rusult[a])
+        })
+      )
+
+      function changeData(){
+        fetch('http://localhost:3000', {
+          header: 'Access-Control-Allow-Origin', '*'
+          method: 'POST',
+          body: {keyValue: forValue}
+        })
+      }
+
+      function findValue(){
+        results.innerHTML = ''
+        resultArr.filter(i=>i.toLowerCase().includes(searchInput.value.toLowerCase())
+        .map(i=>results.innerHTML += `<span>${i}</span>`)
+      }
+
+    </script>
+  </body>
+</html>
